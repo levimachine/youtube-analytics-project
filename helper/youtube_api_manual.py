@@ -30,7 +30,6 @@ channel_id = 'UCwHL6WHUarjGfUM_586me8w'  # HighLoad Channel
 channel = youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
 printj(channel)
 
-
 '''
 получить данные по play-листам канала
 docs: https://developers.google.com/youtube/v3/docs/playlists/list
@@ -43,7 +42,6 @@ playlists = youtube.playlists().list(channelId=channel_id,
 for playlist in playlists['items']:
     print(playlist)
     print()
-
 
 '''
 получить данные по видеороликам в плейлисте
@@ -79,7 +77,6 @@ for video in video_response['items']:
     iso_8601_duration = video['contentDetails']['duration']
     duration = isodate.parse_duration(iso_8601_duration)
     print(duration)
-
 
 '''
 получить статистику видео по его id
