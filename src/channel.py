@@ -17,9 +17,43 @@ class Channel:
         self.title = self.json_dict['items'][0]['snippet']['title']
         self.description = self.json_dict['items'][0]['snippet']['description'][:-1]
         self.url = 'https://www.youtube.com/' + self.json_dict['items'][0]['snippet']['customUrl']
-        self.subscriber_count = self.json_dict['items'][0]['statistics']['subscriberCount']
+        self.subscriber_count = int(self.json_dict['items'][0]['statistics']['subscriberCount'])
         self.video_count = self.json_dict['items'][0]['statistics']['videoCount']
         self.view_count = self.json_dict['items'][0]['statistics']['viewCount']
+
+    def __str__(self) -> str:
+        """
+        Возвращает строку(для пользователя) вида название канала(ссылка на канал)
+        """
+        return f"{self.title}({self.url})"
+
+    def __add__(self, other) -> int:
+        """Операция сложения (подписчиков)"""
+        return self.subscriber_count + other.subscriber_count
+
+    def __sub__(self, other) -> int:
+        """Операция вычитания (подписчиков)"""
+        return self.subscriber_count - other.subscriber_count
+
+    def __lt__(self, other) -> bool:
+        """Операция сравнения 'меньше' (подписчиков)"""
+        return self.subscriber_count < other.subscriber_count
+
+    def __le__(self, other) -> bool:
+        """Операция сравнения 'меньше' или равно (подписчиков)"""
+        return self.subscriber_count <= other.subscriber_count
+
+    def __gt__(self, other) -> bool:
+        """Операция сравнения 'больше' (подписчиков)"""
+        return self.subscriber_count > other.subscriber_count
+
+    def __ge__(self, other) -> bool:
+        """Операция сравнения 'больше' или равно (подписчиков)"""
+        return self.subscriber_count >= other.subscriber_count
+
+    def __eq__(self, other) -> bool:
+        """Операция сравнения 'равенство' (подписчиков)"""
+        return self.subscriber_count == other.subscriber_count
 
     def print_info(self) -> None:
         """Выводит в консоль информацию о канале."""
@@ -28,7 +62,7 @@ class Channel:
         print(channel)
 
     @classmethod
-    def get_service(cls) :
+    def get_service(cls):
         """Класс метод возвращает объект для работы с YouTube API"""
         return build(serviceName='youtube', version='v3', developerKey=os.getenv('API_KEY'))
 
