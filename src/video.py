@@ -1,5 +1,6 @@
 from src.channel import build, os
-
+from pprint import pprint
+import isodate
 
 class Video:
     def __init__(self, video_id: str) -> None:
@@ -19,7 +20,8 @@ class Video:
         self.video_name = self.json_dict['items'][0]['snippet']['localized']['title']
         self.url_video = 'https://youtu.be/' + self.video_id
         self.view_count = self.json_dict['items'][0]['statistics']['viewCount']
-        self.like_count = self.json_dict['items'][0]['statistics']['likeCount']
+        self.like_count = int(self.json_dict['items'][0]['statistics']['likeCount'])
+        self.duration = isodate.parse_duration(self.json_dict['items'][0]['contentDetails']['duration'])
 
     def __str__(self):
         return self.video_name
