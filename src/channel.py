@@ -82,3 +82,9 @@ class Channel:
         }
         with open(file_path, 'w', encoding='utf-8') as json_file:
             json.dump(fp=json_file, obj=json_dict, ensure_ascii=False, indent=3)
+
+
+class BuildObject:
+    @staticmethod
+    def build_youtube():
+        return build(serviceName='youtube', version='v3', developerKey=os.getenv('API_KEY'))
