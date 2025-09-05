@@ -1,6 +1,6 @@
 from src.channel import build, os
-from pprint import pprint
 import isodate
+
 
 class Video:
     def __init__(self, video_id: str) -> None:
@@ -17,14 +17,22 @@ class Video:
         self.build_youtube = build(serviceName='youtube', version='v3', developerKey=os.getenv('API_KEY'))
         self.json_dict = self.build_youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                           id=self.video_id).execute()
-        self.video_name = self.json_dict['items'][0]['snippet']['localized']['title']
-        self.url_video = 'https://youtu.be/' + self.video_id
-        self.view_count = self.json_dict['items'][0]['statistics']['viewCount']
-        self.like_count = int(self.json_dict['items'][0]['statistics']['likeCount'])
-        self.duration = isodate.parse_duration(self.json_dict['items'][0]['contentDetails']['duration'])
+        try:
+            self.title = self.json_dict['items'][0]['snippet']['localized']['title']
+        except IndexError:
+            self.title = None
+            self.url_video = None
+            self.view_count = None
+            self.like_count = None
+            self.duration = None
+        else:
+            self.url_video = 'https://youtu.be/' + self.video_id
+            self.view_count = self.json_dict['items'][0]['statistics']['viewCount']
+            self.like_count = int(self.json_dict['items'][0]['statistics']['likeCount'])
+            self.duration = isodate.parse_duration(self.json_dict['items'][0]['contentDetails']['duration'])
 
     def __str__(self):
-        return self.video_name
+        return self.title
 
 
 class PLVideo(Video):
